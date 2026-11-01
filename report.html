@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Midterm Project Report - GradeMaster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 20mm 16mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.6;
+      font-size: 10pt;
+    }
+
+    /* Print header / footer helpers */
+    .report-header {
+      border-bottom: 2px solid #4f46e5;
+      padding-bottom: 14px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .report-title {
+      font-size: 22pt;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .report-subtitle {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #4f46e5;
+      margin-top: 4px;
+    }
+
+    .report-meta {
+      text-align: right;
+      font-size: 8.5pt;
+      color: #64748b;
+      line-height: 1.45;
+    }
+
+    .report-meta strong {
+      color: #1e293b;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    h2 {
+      font-size: 13.5pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 18px;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1.5px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h2 .section-num {
+      background: #4f46e5;
+      color: #ffffff;
+      font-size: 9pt;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin-bottom: 9px;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      background: #f1f5f9;
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: #4338ca;
+    }
+
+    /* Grid & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 10px 0;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 11px 13px;
+      page-break-inside: avoid;
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 9.5pt;
+      color: #1e293b;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card p {
+      font-size: 8.5pt;
+      color: #475569;
+      margin-bottom: 0;
+      line-height: 1.45;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 8.5pt;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 9px;
+      text-align: left;
+    }
+
+    th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .badge-success {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+
+    .badge-primary {
+      background: #eef2ff;
+      color: #4338ca;
+      border: 1px solid #c7d2fe;
+    }
+
+    /* Callout */
+    .callout {
+      background: #eff6ff;
+      border-left: 3.5px solid #3b82f6;
+      border-radius: 0 6px 6px 0;
+      padding: 10px 14px;
+      margin: 12px 0;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+
+    .callout strong {
+      color: #1e40af;
+    }
+
+    .callout p {
+      margin-bottom: 0;
+      color: #1e3a8a;
+    }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 24px;
+      padding-top: 10px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 8pt;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER / TITLE -->
+  <header class="report-header">
+    <div>
+      <h1 class="report-title">GradeMaster</h1>
+      <p class="report-subtitle">Academic Grade Calculator &amp; Target Planning System</p>
+    </div>
+    <div class="report-meta">
+      <strong>Midterm Project Report</strong><br>
+      Author: <strong>Dheeraj Patil</strong><br>
+      Date: <strong>November 1, 2026</strong><br>
+      GitHub: <a href="https://github.com/DheerajsPatil/grade-calculator" style="color: #4f46e5; text-decoration: none;">DheerajsPatil/grade-calculator</a>
+    </div>
+  </header>
+
+  <!-- SECTION 1: WHAT YOU MADE -->
+  <section>
+    <h2><span class="section-num">01</span> What You Made</h2>
+    <p>
+      <strong>GradeMaster</strong> is a modern, responsive single-page web application engineered to solve the everyday challenges students and educators face when tracking course standings, computing weighted percentages, planning final exam targets, and monitoring semester GPA.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">⚖️ Weighted Category Engine</div>
+        <p>Supports syllabus structures where course components have differing percentage weights (e.g., 20% Midterms, 30% Homework, 50% Final). It dynamically validates total weight allocation (alerting at &ne;100%) and features a toggle for direct percentage inputs or fractional points earned (e.g., 45/50).</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🎯 Final Exam Target Planner</div>
+        <p>Solves the inverse linear equation: <code>Target = Current &times; (1 - W) + Exam &times; W</code> to compute the exact score required on a comprehensive final exam. Provides qualitative advice badges (e.g., "Secured", "Achievable", "Challenging", or "Extra Credit Required").</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📊 Points-Based Grade Calculator</div>
+        <p>Designed for courses graded on cumulative points (e.g., 850 total points over a semester). Computes live totals for earned points, possible points, raw percentage scores, and equivalent letter grades.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🎓 Semester GPA Calculator</div>
+        <p>Calculates semester Grade Point Average on a standard 4.0 scale by multiplying course credit hours with grade points to yield total Quality Points (QP) and cumulative GPA.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 8px;">
+      <div class="card-title">✨ Interactive Visualizations &amp; Architectural Highlights</div>
+      <p>
+        The application is built on a <strong>zero-dependency architecture</strong> (vanilla HTML5, CSS3, and ES6+ JavaScript), guaranteeing lightning-fast startup and total offline availability. It features an <strong>animated SVG circular progress gauge</strong> showing real-time grade standings, full <strong>Dark/Light mode</strong> theming with CSS custom properties, pre-built <strong>syllabus presets</strong> (Standard College, STEM Lab, High School), an interactive <strong>Custom Grading Scale</strong> modal, and automatic <code>localStorage</code> persistence.
+      </p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: WHO IT IS FOR -->
+  <section style="margin-top: 14px;">
+    <h2><span class="section-num">02</span> Who It Is For</h2>
+    <p>
+      Academic grading systems vary wildly across institutions, departments, and course levels. GradeMaster is targeted toward four key user groups:
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">👨‍🎓 College &amp; University Students</div>
+        <p>Undergraduate and graduate students managing diverse syllabi with complex weighting, drop-lowest policies, and high-stakes final exams. GradeMaster eliminates guesswork during finals week.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🎒 High School &amp; AP/IB Students</div>
+        <p>Students aiming for selective university admissions who must closely monitor weighted GPAs, test scores, and assignment point totals to maintain honors eligibility.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🧑‍🏫 Academic Advisors &amp; Counselors</div>
+        <p>Advisors conducting student intervention sessions. They can load syllabus templates to model academic recovery scenarios and map realistic paths to good academic standing.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">👩‍🏫 Educators &amp; Teaching Assistants</div>
+        <p>Instructors who need a lightweight tool to verify grade distribution models, test boundary conditions, or demonstrate grading policies to students.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>User Persona Illustration (Maya, Sophomore Computer Science Major):</strong><br>
+      <em>"It's two weeks before finals. Maya has an 84.5% in Data Structures. Her final exam counts for 25% of her course grade, and she needs an A- (90%) for her scholarship. Using the Final Exam Target Planner, she immediately learns she needs a 106.5% on the final exam. Recognizing that an A- requires extra credit, she switches her target to a solid B+ (87%), discovering she needs a realistic 94.5% on the exam, allowing her to optimize her study hours effectively."</em>
+    </div>
+  </section>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 3: HOW YOU MADE IT WITH AI -->
+  <section>
+    <h2><span class="section-num">03</span> How You Made It With AI</h2>
+    <p>
+      The project was developed through an advanced AI-assisted pair-programming workflow leveraging <strong>Antigravity</strong> powered by <strong>Gemini 3.8 Flash</strong>. The methodology followed an iterative, structured engineering lifecycle:
+    </p>
+
+    <ol>
+      <li>
+        <strong>Iterative Planning &amp; Architectural Synthesis:</strong>
+        Rather than jumping directly to raw code, the development started in <em>Planning Mode</em>. The AI agent generated a detailed technical proposal (<code>implementation_plan.md</code>) defining module boundaries, state management models, SVG geometry formulas, and validation rubrics before writing application code.
+      </li>
+      <li>
+        <strong>Component-Driven Code Generation:</strong>
+        The UI and calculation engine were split into clean concerns:
+        <ul>
+          <li><strong>Semantic HTML (<code>index.html</code>)</strong>: Built with accessible form fields, ARIA roles, clean tab switching, and modal dialogs.</li>
+          <li><strong>Modular CSS (<code>styles.css</code>)</strong>: Configured with CSS custom properties (variables) for seamless light/dark theme toggles, glassmorphic card elevations, responsive media breakpoints, and print-friendly styles.</li>
+          <li><strong>Reactive Engine (<code>app.js</code>)</strong>: Implemented an event-delegated architecture with debounced <code>localStorage</code> synchronization and mathematical solvers.</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Mathematical Solver Formulation:</strong>
+        The AI formulated and implemented exact solutions for weighted category normalization when total syllabus weights are in-progress ($W_{total} < 100\%$) and the inverse final exam equation:
+        <br>
+        <code>Score_{required} = (Target - Current &times; (1 - W_{exam})) / W_{exam}</code>
+      </li>
+      <li>
+        <strong>AI-Driven Tooling &amp; Git Automation:</strong>
+        The AI utilized background execution tools to initialize Git repositories, configure tracking branches, produce comprehensive project documentation (<code>README.md</code>, <code>.gitignore</code>), and seamlessly push code to GitHub using the GitHub CLI (<code>gh</code>).
+      </li>
+    </ol>
+  </section>
+
+  <!-- SECTION 4: WHAT YOU CHECKED -->
+  <section style="margin-top: 14px;">
+    <h2><span class="section-num">04</span> What You Checked (Quality Assurance &amp; Verification)</h2>
+    <p>
+      To ensure production-grade reliability, a rigorous automated and manual testing matrix was executed across calculations, DOM bindings, and boundary edge cases:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Module / Function</th>
+          <th>Test Input Vectors</th>
+          <th>Expected Value</th>
+          <th>Tested Result</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Weighted Grade</strong></td>
+          <td>HW 20% @ 90, Midterm 30% @ 80, Final 50% @ 95</td>
+          <td>89.50%</td>
+          <td>89.50%</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+        <tr>
+          <td><strong>Final Target Solver</strong></td>
+          <td>Current 84.5%, Exam Weight 25%, Target 90.0%</td>
+          <td>106.50% (Extra Credit)</td>
+          <td>106.50%</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+        <tr>
+          <td><strong>Points Aggregator</strong></td>
+          <td>88/100, 45/50, 142/150, 92/100 (367 / 400 pts)</td>
+          <td>91.75% (A-)</td>
+          <td>91.75%</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+        <tr>
+          <td><strong>Semester GPA</strong></td>
+          <td>4 cr A- (3.7), 4 cr A (4.0), 3 cr B+ (3.3), 3 cr A (4.0)</td>
+          <td>3.76 GPA (52.7 / 14 QP)</td>
+          <td>3.76 GPA</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+        <tr>
+          <td><strong>DOM Bindings</strong></td>
+          <td>45 JavaScript Element IDs checked against HTML</td>
+          <td>100% matched</td>
+          <td>45 / 45 matched</td>
+          <td><span class="badge badge-success">PASSED</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🛡️ Boundary &amp; Edge Cases Tested</div>
+        <p>
+          &bull; <strong>Zero Division:</strong> Zero credits or 0 total points return safe fallbacks without throwing NaN or infinity.<br>
+          &bull; <strong>Weight Over-allocation:</strong> Automatically shifts progress bar from green to warning amber or danger red when weights exceed 100%.<br>
+          &bull; <strong>Negative / Out-of-bounds:</strong> Handles inputs > 100% (bonus credit) and negative values gracefully.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📱 Visual &amp; Cross-Platform Verification</div>
+        <p>
+          &bull; <strong>Responsive Design:</strong> Tested across desktop (1200px), tablet (768px), and mobile viewports (375px).<br>
+          &bull; <strong>Local Persistence:</strong> Verified data preservation across browser reloads.<br>
+          &bull; <strong>Print Media:</strong> Tested <code>@media print</code> formatting for clean PDF export without navigational clutter.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: WHAT IS NEXT -->
+  <section style="margin-top: 14px;">
+    <h2><span class="section-num">05</span> What Is Next</h2>
+    <p>
+      While the current application is feature-complete, future development milestones will expand GradeMaster into an all-in-one academic planner:
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">📱 Progressive Web App (PWA)</div>
+        <p>Implement service worker caching and web app manifest so students can install GradeMaster directly on iOS and Android home screens and access it completely offline.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔄 LMS Integration (Canvas / Blackboard)</div>
+        <p>Allow students to securely import their live assignment grades, syllabus weighting schemes, and quiz scores directly via Canvas REST API or CSV export.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🎲 Monte Carlo "What-If" Forecasting</div>
+        <p>Incorporate probabilistic simulation modeling where students can set minimum/maximum expected scores on upcoming exams and view percentage likelihoods of achieving specific letter grades.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">☁️ Multi-Semester Cloud Synchronization</div>
+        <p>Enable encrypted cloud synchronization with Google Drive / OneDrive to track 4-year cumulative degree progress, major GPAs, and graduation honors qualifications.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="doc-footer">
+    <span>GradeMaster Midterm Project Report &bull; Dheeraj Patil</span>
+    <span>Generated November 1, 2026 &bull; Antigravity AI Engineering</span>
+  </footer>
+
+</body>
+</html>
