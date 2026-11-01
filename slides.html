@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GradeMaster - Slide Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --bg-card: #131a29;
+      --border: #242f46;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-light: #1e1b4b;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #0ea5e9;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* Presentation Deck Container */
+    .deck-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1100px;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3.5rem 4rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 40px rgba(99, 102, 241, 0.15);
+      position: relative;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Slide Header */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+
+    .slide-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 0.3rem 0.8rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      margin-bottom: 0.75rem;
+    }
+
+    .slide-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 30%, #c7d2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    /* Slide Content */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Grids & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .slide-card {
+      background: rgba(14, 20, 34, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .slide-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .slide-card-icon {
+      font-size: 1.8rem;
+      line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+
+    .slide-card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .slide-card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Title Slide Specifics */
+    .title-slide {
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .title-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      padding: 0.4rem 1.2rem;
+      border-radius: 9999px;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .hero-title {
+      font-size: 4.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #ffffff 20%, #818cf8 70%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.45rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      line-height: 1.4;
+    }
+
+    .presenter-box {
+      margin-top: 1rem;
+      padding: 0.8rem 1.6rem;
+      background: rgba(14, 20, 34, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .presenter-box span strong {
+      color: #ffffff;
+    }
+
+    /* Stat Box */
+    .stat-box {
+      text-align: center;
+      padding: 1.2rem 1rem;
+      background: rgba(14, 20, 34, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .stat-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 0.3rem;
+    }
+
+    /* Formula Banner */
+    .formula-banner {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15));
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 1rem 1.4rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    .formula-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #a5b4fc;
+    }
+
+    /* Slide Footer */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.825rem;
+      color: var(--text-muted);
+    }
+
+    /* Bottom Control Bar */
+    .control-bar {
+      height: 64px;
+      background: rgba(19, 26, 41, 0.85);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 100;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn-ctrl {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-ctrl:hover:not(:disabled) {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-ctrl:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .slide-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .progress-bar-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Key indicator helper */
+    .shortcut-pill {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* =======================================================================
+       Print Stylesheet (Slide deck PDF export)
+       ======================================================================= */
+    @media print {
+      @page {
+        size: 16in 9in landscape;
+        margin: 0;
+      }
+
+      body {
+        background: #090d16 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        overflow: visible !important;
+      }
+
+      .control-bar {
+        display: none !important;
+      }
+
+      .deck-container {
+        display: block !important;
+        padding: 0 !important;
+      }
+
+      .slide {
+        display: flex !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+        page-break-after: always !important;
+        page-break-inside: avoid !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slide Deck Container -->
+  <div class="deck-container">
+
+    <!-- SLIDE 1: TITLE SLIDE -->
+    <div class="slide active title-slide" data-slide="1">
+      <div class="title-badge">🚀 Midterm Project Presentation</div>
+      <h1 class="hero-title">GradeMaster</h1>
+      <p class="hero-subtitle">Smart Academic Grade Calculator &amp; Target Planning System</p>
+      
+      <div class="presenter-box">
+        <span>Presenter: <strong>Dheeraj Patil</strong></span>
+        <span>&bull;</span>
+        <span>Built with: <strong>Antigravity AI</strong></span>
+        <span>&bull;</span>
+        <span>Stack: <strong>HTML5 / CSS3 / ES6+ JS</strong></span>
+      </div>
+
+      <div class="slide-footer" style="width: 100%;">
+        <span>Class Presentation &bull; Academic Year 2026</span>
+        <span>Use &larr; &rarr; Arrow Keys or Buttons to Navigate</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: THE PROBLEM -->
+    <div class="slide" data-slide="2">
+      <div class="slide-header">
+        <div>
+          <span class="slide-tag">Problem Statement</span>
+          <h2 class="slide-title">The Student Dilemma: Finals Week Anxiety</h2>
+          <p class="slide-subtitle">Why traditional grade tracking is frustrating, inaccurate, and stressful.</p>
+        </div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="slide-card">
+            <div class="slide-card-icon">🌀</div>
+            <h3 class="slide-card-title">Complex Syllabi</h3>
+            <p class="slide-card-desc">Every professor weights grades differently (e.g. 15% HW, 25% Labs, 30% Midterms, 30% Final). Calculating weighted averages by hand is tedious and error-prone.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="slide-card-icon">❓</div>
+            <h3 class="slide-card-title">The "Final Exam Question"</h3>
+            <p class="slide-card-desc">"What do I need on the final exam to keep my A or save my scholarship?" Students waste hours guessing what score they need instead of studying.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="slide-card-icon">⚠️</div>
+            <h3 class="slide-card-title">Clunky Existing Tools</h3>
+            <p class="slide-card-desc">Existing online calculators are cluttered with intrusive ads, track student data, lack offline support, and don't save progress when the tab is closed.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>GradeMaster Presentation</span>
+        <span>02 / 09</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: THE SOLUTION -->
+    <div class="slide" data-slide="3">
+      <div class="slide-header">
+        <div>
+          <span class="slide-tag">The Solution</span>
+          <h2 class="slide-title">Meet GradeMaster: Clean, Private, &amp; Smart</h2>
+          <p class="slide-subtitle">A modern, responsive single-page web app built specifically for students.</p>
+        </div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-4">
+          <div class="slide-card">
+            <div class="slide-card-icon">⚖️</div>
+            <h3 class="slide-card-title">Weighted Grades</h3>
+            <p class="slide-card-desc">Supports direct percentage or points fraction inputs with real-time weight meters.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="slide-card-icon">🎯</div>
+            <h3 class="slide-card-title">Exam Target Solver</h3>
+            <p class="slide-card-desc">Instant mathematical projection of required final exam scores to hit desired grades.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="slide-card-icon">📊</div>
+            <h3 class="slide-card-title">Points-Based</h3>
+            <p class="slide-card-desc">Tracks cumulative points courses (earned vs. possible) with instant letter conversions.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="slide-card-icon">🎓</div>
+            <h3 class="slide-card-title">Semester GPA</h3>
+            <p class="slide-card-desc">Standard 4.0 GPA calculator with course credits and quality point calculations.</p>
+          </div>
+        </div>
+
+        <div class="formula-banner">
+          <div>
+            <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); display: block;">Zero-Dependency Architecture</span>
+            <span style="color: #ffffff; font-weight: 600; font-size: 0.95rem;">Pure Vanilla HTML5, CSS3, &amp; ES6+ JavaScript &bull; Instant load, zero build tools, 100% offline.</span>
+          </div>
+          <span class="title-badge" style="box-shadow: none;">⚡ 0.0s Latency</span>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>GradeMaster Presentation</span>
+        <span>03 / 09</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: CORE CALCULATION ENGINES -->
+    <div class="slide" data-slide="4">
+      <div class="slide-header">
+        <div>
+          <span class="slide-tag">Engineering Deep Dive</span>
+          <h2 class="slide-title">Under the Hood: Precision Math Solvers</h2>
+          <p class="slide-subtitle">Mathematical formulas engineered for edge-case accuracy and syllabus dynamics.</p>
+        </div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="slide-card">
+            <h3 class="slide-card-title">1. Dynamic Weighted Normalization</h3>
+            <p class="slide-card-desc">
+              When a semester is still ongoing and weights sum to less than 100%, GradeMaster normalizes standing based on completed work:
+            </p>
+            <div style="background: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem;">
+              <code style="font-size: 0.9rem; color: #a5b4fc;">Score = (&sum; (Score_i &times; Weight_i)) / (&sum; Weight_i) &times; 100</code>
+            </div>
+            <p class="slide-card-desc" style="font-size: 0.8rem; margin-top: 0.4rem;">
+              Alerts in real-time if total weight exceeds 100% or is missing allocations.
+            </p>
+          </div>
+
+          <div class="slide-card">
+            <h3 class="slide-card-title">2. Inverse Linear Final Exam Solver</h3>
+            <p class="slide-card-desc">
+              Solves for the exact score needed on a weighted final exam:
+            </p>
+            <div style="background: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem;">
+              <code style="font-size: 0.9rem; color: #a5b4fc;">Exam_{req} = [Target - Current &times; (1 - W_{exam})] / W_{exam}</code>
+            </div>
+            <p class="slide-card-desc" style="font-size: 0.8rem; margin-top: 0.4rem;">
+              Categorizes outcomes into: <strong>Secured (&le;0%)</strong>, <strong>Achievable (&le;85%)</strong>, <strong>Challenging (&le;100%)</strong>, or <strong>Extra Credit (&gt;100%)</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>GradeMaster Presentation</span>
+        <span>04 / 09</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: USER EXPERIENCE & VISUALS -->
+    <div class="slide" data-slide="5">
+      <div class="slide-header">
+        <div>
+          <span class="slide-tag">User Experience</span>
+          <h2 class="slide-title">Interactive UI &amp; Real-Time Feedback</h2>
+          <p class="slide-subtitle">Designed to be intuitive, accessible, and enjoyable to use on any device.</p>
+        </div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="slide-card">
+            <div class="slide-card-icon">⭕</div>
+            <h3 class="slide-card-title">Radial SVG Grade Gauge</h3>
+            <p class="slide-card-desc">Dynamic circular progress ring with color transitions: Emerald for A, Indigo for B, Amber for C, and Rose for D/F with live letter badges.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="slide-card-icon">🌓</div>
+            <h3 class="slide-card-title">Theme System &amp; Presets</h3>
+            <p class="slide-card-desc">Full dark &amp; light mode toggle. Includes one-click syllabus templates for <em>Standard College</em>, <em>STEM Lab</em>, and <em>High School</em> courses.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="slide-card-icon">💾</div>
+            <h3 class="slide-card-title">Persistence &amp; Custom Scales</h3>
+            <p class="slide-card-desc">Auto-saves to browser <code>localStorage</code>. Users can customize letter cutoffs (e.g. 93% A vs 90% A) and export clean PDF reports with 1 click.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>GradeMaster Presentation</span>
+        <span>05 / 09</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: HOW WE MADE IT WITH AI -->
+    <div class="slide" data-slide="6">
+      <div class="slide-header">
+        <div>
+          <span class="slide-tag">Methodology</span>
+          <h2 class="slide-title">Building with AI: The Antigravity Workflow</h2>
+          <p class="slide-subtitle">How human-AI collaboration accelerated development from concept to deployment.</p>
+        </div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-4">
+          <div class="stat-box">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Planning Mode</div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem;">Comprehensive architectural spec and verification criteria established before writing code.</p>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-number">2</div>
+            <div class="stat-label">Rapid Synthesis</div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem;">Clean separation of semantic HTML5, CSS design tokens, and modular reactive JavaScript.</p>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-number">3</div>
+            <div class="stat-label">Automated Testing</div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem;">Synthesized automated Python test scripts to verify math formulas and DOM bindings.</p>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-number">4</div>
+            <div class="stat-label">Git / CI Delivery</div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem;">Autonomous CLI repo creation, commit versioning, and GitHub push with full documentation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>GradeMaster Presentation</span>
+        <span>06 / 09</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: QUALITY ASSURANCE & VERIFICATION -->
+    <div class="slide" data-slide="7">
+      <div class="slide-header">
+        <div>
+          <span class="slide-tag">Verification</span>
+          <h2 class="slide-title">Testing &amp; Quality Assurance</h2>
+          <p class="slide-subtitle">100% test pass rate across mathematical vectors and interface integrity.</p>
+        </div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="slide-card">
+            <h3 class="slide-card-title">✅ Benchmark Test Suite Results</h3>
+            <ul style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.8; margin-left: 1.2rem;">
+              <li><strong style="color: #ffffff;">Weighted Calculation:</strong> HW (20% @ 90), Midterm (30% @ 80), Final (50% @ 95) &rarr; <span style="color: var(--success); font-weight: 700;">89.50% Passed</span></li>
+              <li><strong style="color: #ffffff;">Target Solver:</strong> Current 84.5%, Weight 25%, Target 90.0% &rarr; <span style="color: var(--success); font-weight: 700;">106.50% Passed</span></li>
+              <li><strong style="color: #ffffff;">Points Calculation:</strong> 367 / 400 pts &rarr; <span style="color: var(--success); font-weight: 700;">91.75% Passed</span></li>
+              <li><strong style="color: #ffffff;">Semester GPA:</strong> 14 credits, 52.7 QP &rarr; <span style="color: var(--success); font-weight: 700;">3.76 GPA Passed</span></li>
+            </ul>
+          </div>
+
+          <div class="slide-card">
+            <h3 class="slide-card-title">🛡️ Robust Edge Case Protection</h3>
+            <ul style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.8; margin-left: 1.2rem;">
+              <li><strong>Division by Zero:</strong> Safe fallbacks for 0 credits or 0 possible points.</li>
+              <li><strong>DOM Element Integrity:</strong> 45 of 45 JavaScript selectors validated against HTML.</li>
+              <li><strong>Input Validation:</strong> Handles bonus credit (>100%) and negative inputs safely.</li>
+              <li><strong>Responsive Viewports:</strong> Tested on Mobile (375px), Tablet (768px), &amp; Desktop.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>GradeMaster Presentation</span>
+        <span>07 / 09</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: FUTURE ROADMAP -->
+    <div class="slide" data-slide="8">
+      <div class="slide-header">
+        <div>
+          <span class="slide-tag">Roadmap</span>
+          <h2 class="slide-title">What's Next for GradeMaster?</h2>
+          <p class="slide-subtitle">Expanding GradeMaster into a comprehensive academic companion.</p>
+        </div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-4">
+          <div class="slide-card">
+            <div class="slide-card-icon">📱</div>
+            <h3 class="slide-card-title">PWA Mobile App</h3>
+            <p class="slide-card-desc">Installable on iOS and Android home screens with zero network dependency.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="slide-card-icon">🔄</div>
+            <h3 class="slide-card-title">LMS API Sync</h3>
+            <p class="slide-card-desc">Auto-import assignments and syllabus weights directly from Canvas and Blackboard.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="slide-card-icon">🎲</div>
+            <h3 class="slide-card-title">Monte Carlo AI</h3>
+            <p class="slide-card-desc">Probabilistic "What-If" modeling showing % chances of hitting target honors GPAs.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="slide-card-icon">☁️</div>
+            <h3 class="slide-card-title">Cloud Degree Sync</h3>
+            <p class="slide-card-desc">Multi-semester cumulative degree audit and major GPA progress tracking.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>GradeMaster Presentation</span>
+        <span>08 / 09</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: CONCLUSION & DEMO -->
+    <div class="slide title-slide" data-slide="9">
+      <div class="title-badge" style="background: var(--success); color: #042f1a;">🎉 Conclusion &amp; Live Demo</div>
+      <h2 class="hero-title" style="font-size: 3.5rem;">Try GradeMaster Today</h2>
+      <p class="hero-subtitle" style="font-size: 1.25rem;">
+        Empowering students with clarity, confidence, and stress-free grade planning.
+      </p>
+
+      <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+        <div class="presenter-box">
+          <span>GitHub: <strong>github.com/DheerajsPatil/grade-calculator</strong></span>
+        </div>
+      </div>
+
+      <div style="margin-top: 1rem;">
+        <h3 style="font-size: 1.5rem; color: #a5b4fc;">Thank You! Questions &amp; Feedback?</h3>
+      </div>
+
+      <div class="slide-footer" style="width: 100%;">
+        <span>GradeMaster Presentation &bull; Dheeraj Patil</span>
+        <span>End of Deck &bull; Press &larr; to return</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Control Bar -->
+  <footer class="control-bar">
+    <div class="control-group">
+      <button class="btn-ctrl" id="btn-prev" aria-label="Previous Slide">
+        <span>&larr;</span> Prev
+      </button>
+      <button class="btn-ctrl" id="btn-next" aria-label="Next Slide">
+        Next <span>&rarr;</span>
+      </button>
+      <span class="shortcut-pill">Keys: &larr; &rarr; or Space</span>
+    </div>
+
+    <div class="control-group">
+      <span class="slide-counter" id="slide-counter">Slide 1 of 9</span>
+    </div>
+
+    <div class="control-group">
+      <button class="btn-ctrl" id="btn-fullscreen" title="Toggle Fullscreen">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        </svg>
+        Fullscreen
+      </button>
+      <button class="btn-ctrl" id="btn-print-slides" title="Print or Save as PDF">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 6 2 18 2 18 9"/>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+          <rect x="6" y="14" width="12" height="8"/>
+        </svg>
+        PDF Slides
+      </button>
+    </div>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progress-bar-fill" style="width: 11.11%;"></div>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      const slides = document.querySelectorAll('.slide');
+      const totalSlides = slides.length;
+      let currentSlide = 1;
+
+      const prevBtn = document.getElementById('btn-prev');
+      const nextBtn = document.getElementById('btn-next');
+      const counter = document.getElementById('slide-counter');
+      const progressFill = document.getElementById('progress-bar-fill');
+      const fullscreenBtn = document.getElementById('btn-fullscreen');
+      const printBtn = document.getElementById('btn-print-slides');
+
+      function updateSlide(newIndex) {
+        if (newIndex < 1 || newIndex > totalSlides) return;
+        currentSlide = newIndex;
+
+        slides.forEach(slide => {
+          const slideNum = parseInt(slide.getAttribute('data-slide'), 10);
+          slide.classList.toggle('active', slideNum === currentSlide);
+        });
+
+        counter.textContent = `Slide ${currentSlide} of ${totalSlides}`;
+        progressFill.style.width = `${(currentSlide / totalSlides) * 100}%`;
+
+        prevBtn.disabled = currentSlide === 1;
+        nextBtn.disabled = currentSlide === totalSlides;
+      }
+
+      prevBtn.addEventListener('click', () => updateSlide(currentSlide - 1));
+      nextBtn.addEventListener('click', () => updateSlide(currentSlide + 1));
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          updateSlide(currentSlide + 1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace') {
+          e.preventDefault();
+          updateSlide(currentSlide - 1);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          updateSlide(1);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          updateSlide(totalSlides);
+        } else if (e.key.toLowerCase() === 'f') {
+          toggleFullscreen();
+        }
+      });
+
+      // Fullscreen toggle
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+
+      fullscreenBtn.addEventListener('click', toggleFullscreen);
+      printBtn.addEventListener('click', () => window.print());
+
+      // Touch / Swipe support
+      let touchStartX = 0;
+      document.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, false);
+
+      document.addEventListener('touchend', (e) => {
+        const diff = e.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(diff) > 50) {
+          if (diff < 0) updateSlide(currentSlide + 1);
+          else updateSlide(currentSlide - 1);
+        }
+      }, false);
+
+      updateSlide(1);
+    })();
+  </script>
+</body>
+</html>
