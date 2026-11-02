@@ -2,10 +2,14 @@
 
 A sleek, modern, and responsive web application designed for students and educators to calculate grades, project required final exam scores, track points-based courses, and compute semester GPA.
 
+[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-GitHub%20Pages-4f46e5?style=for-the-badge)](https://dheerajspatil.github.io/grade-calculator/)
+
 ![GradeMaster Screenshot](https://img.shields.io/badge/status-active-success.svg)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+
+> 🔗 **Live App:** https://dheerajspatil.github.io/grade-calculator/
 
 ---
 
